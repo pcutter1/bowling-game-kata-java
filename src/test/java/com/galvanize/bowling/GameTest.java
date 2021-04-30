@@ -1,10 +1,9 @@
 package com.galvanize.bowling;
 
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.junit.jupiter.api.Test;
 
 public class GameTest {
 
@@ -23,9 +22,33 @@ public class GameTest {
 
     Game game = new Game();
     game.rollBall(0);
-
+    game.rollBall(5);
+    int expected = 5;
+    int actual = game.getRollScores().get(1);
    assertFalse(game.getRollScores().isEmpty());
+   assertEquals(expected, actual, "Testing if pins hit are properly stored");
+  }
 
+  @Test
+  public void testAllGutters() {
+    Game game = new Game();
+    for (int i = 0; i < 20; i += 1) {
+      game.rollBall(0);
+    }
+    int expected = 0;
+    int actual = game.getScore();
+    assertEquals(expected, actual, "Testing 20 gutter game score is 0");
+  }
+
+  @Test
+  public void testAllOnes() {
+    Game game = new Game();
+    for (int i = 0; i < 20; i += 1) {
+      game.rollBall(1);
+    }
+    int expected = 20;
+    int actual = game.getScore();
+    assertEquals(expected, actual, "Testing 20 one-pin rolls game score will be 20");
   }
 
 }
