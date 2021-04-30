@@ -9,6 +9,11 @@ public class Game {
 
   public void rollBall(int pinsHit){
     rollScores.add(pinsHit);
+    updateScore(pinsHit);
+  }
+
+  void updateScore(int pinsHit) {
+    score += pinsHit;
   }
 
 

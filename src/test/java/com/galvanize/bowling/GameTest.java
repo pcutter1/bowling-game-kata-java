@@ -51,4 +51,22 @@ public class GameTest {
     assertEquals(expected, actual, "Testing 20 one-pin rolls game score will be 20");
   }
 
+  @Test
+  public void testOneSpare() {
+    Game game = new Game();
+    game.rollBall(5);
+    game.rollBall(5);
+    game.rollBall(3);
+    game.rollBall(3);
+
+    for (int i = 0; i < 17; i++) {
+      game.rollBall(0);
+    }
+
+    int expected = 19;
+    int actual = game.getScore();
+    assertEquals(expected, actual, "Testing score of a game with Spare logic");
+  }
+
+
 }
