@@ -1,45 +1,41 @@
 package com.galvanize.bowling;
 
-import java.util.ArrayList;
-
 public class Game {
 
   private int score;
-  private final ArrayList<Integer> rollScores = new ArrayList<>();
-  private int rollScoreIndex = 1;
-  private int frameRollIndex = 1;
+  private final int[] rollScores = new int[21];
+  private int rollScoreIndex = 0;
 
   public Game() {
 
   }
 
   public void rollBall(int pinsHit){
-    rollScores.add(pinsHit);
-    updateScore(frameRollIndex, pinsHit);
-    if (frameRollIndex % 2 == 1 && pinsHit == 10){
-      frameRollIndex++;
-    }
-    updateRollCount();
+    rollScores[rollScoreIndex++] = pinsHit;
   }
 
-  void updateRollCount(){
-    rollScoreIndex++;
-    frameRollIndex++;
+  public void rollBall(int... rollScores) {
+    for (int pinsHit : rollScores) {
+      rollBall(pinsHit);
+    }
+    updateScore();
   }
 
-  void updateScore(int rollIndex, int pinsHit) {
-
-    int totalAdd = pinsHit;
-
-    if (rollIndex > 2 && rollIndex % 2 == 1
-        && rollScores.get(rollIndex - 2) + rollScores.get(rollIndex -3) == 10){
-      totalAdd+= pinsHit;
+  public void updateScore() {
+    int frameIndex = 0;
+    int totalAdd = 0;
+    for(int frame = 0; frame < 10; frame++) {
+      if (rollScores[frameIndex] == 10 && frameIndex < 19) {
+        totalAdd += rollScores[frameIndex] + rollScores[frameIndex + 1] + rollScores[frameIndex + 2];
+        frameIndex++;
+      } else if (frameIndex < 19 && rollScores[frameIndex] + rollScores[frameIndex + 1] == 10) {
+          totalAdd += 10 + rollScores[frameIndex + 2];
+          frameIndex++;
+        } else {
+        totalAdd += rollScores[frameIndex] + rollScores[frameIndex + 1];
+        frameIndex ++;
+      }
     }
-
-    if (rollIndex > 2 && rollIndex % 2 == 1 && rollScores.get(rollIndex -3) == 10) {
-      totalAdd += rollScores.get(rollScoreIndex - 1) + pinsHit;
-    }
-
 
     score += totalAdd;
   }
@@ -48,7 +44,7 @@ public class Game {
     return rollScoreIndex;
   }
 
-  public ArrayList<Integer> getRollScores() {
+  public int[] getRollScores() {
     return rollScores;
   }
 
